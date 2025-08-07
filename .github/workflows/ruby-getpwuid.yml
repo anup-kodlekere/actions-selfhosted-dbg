@@ -13,21 +13,20 @@ jobs:
         include:
           - arch: amd64
             runner: ubuntu-latest
-          - arch: ppc64le
+          - arch: ppc64le-selfhosted
             runner: ppc64le-rubyid
+          - arch: ppc64le
+            runner: ubuntu-24.04-ppc64le
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Build 
-        run: |
-          echo "Running on ${{ matrix.arch }}"
 
       - name: Debug id info
         run: |
           id
           id -u
           id -g
+        working-directory:
 
       - name: Debug getpwuid()
         run: |
