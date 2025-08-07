@@ -1,0 +1,36 @@
+name: Ruby GetPWUID
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  ruby-getpwuid-debug:
+    name: Build on ${{ matrix.arch }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-latest
+          - arch: ppc64le
+            runner: ppc64le-rubyid
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build 
+        run: |
+          echo "Running on ${{ matrix.arch }}"
+
+      - name: Debug id info
+        run: |
+          id
+          id -u
+          id -g
+
+      - name: Debug getpwuid()
+        run: |
+          gcc ../../src/getpwuid.c -o get_pw_by_uid
+          ./get_pw_by_uid "$(id -u)"
