@@ -9,7 +9,6 @@ jobs:
     name: Build on ${{ matrix.arch }}
     runs-on: ${{ matrix.runner }}
     strategy:
-      fail-fast: false
       matrix:
         include:
           - arch: amd64
@@ -32,5 +31,6 @@ jobs:
 
       - name: Debug getpwuid()
         run: |
-          gcc ../../src/getpwuid.c -o get_pw_by_uid
+          pwd
+          gcc ../../src/ruby/getpwuid.c -o get_pw_by_uid
           ./get_pw_by_uid "$(id -u)"
