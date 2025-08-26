@@ -1,4 +1,4 @@
-name: Ruby GetPWUID
+name: Ruby GetPWUID Test
 
 on:
   workflow_dispatch:
