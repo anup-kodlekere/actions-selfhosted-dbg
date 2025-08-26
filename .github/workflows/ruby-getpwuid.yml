@@ -13,8 +13,8 @@ jobs:
         include:
           - arch: amd64
             runner: ubuntu-latest
-          - arch: ppc64le-selfhosted
-            runner: ppc64le-rubyid
+          # - arch: ppc64le-selfhosted
+          #   runner: ppc64le-rubyid
           - arch: ppc64le
             runner: ubuntu-24.04-ppc64le
     steps:
