@@ -16,7 +16,7 @@ jobs:
           # - arch: ppc64le-selfhosted
           #   runner: ppc64le-rubyid
           - arch: ppc64le
-            runner: ubuntu-24.04-ppc64le
+            runner: ubuntu-24.04-s390x
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -36,5 +36,5 @@ jobs:
 
       - name: Check docker
         run: |
-          sudo docker info
+          docker info
           
