@@ -30,7 +30,7 @@ jobs:
 
       - name: Debug getpwuid()
         run: |
-          if [ "$(uname -m)" = "ppc64le" ]; then
+          if [[ "$(uname -m)" == "ppc64le" ]]; then
             echo "original passwd"
             cat /etc/passwd
             sudo usermod -g "$(id -g)" runner
