@@ -30,7 +30,14 @@ jobs:
 
       - name: Debug getpwuid()
         run: |
-          sudo usermod -g "$(id -g)" runner
+          #sudo usermod -g "$(id -g)" runner
+          echo "passwd before"
+          cat /etc/passwd
+          
+          sudo usermod -aG "$(id -g)" runner
+
+          echo "passwrd after"
+          cat /etc/passwd
           gcc "${{ github.workspace }}/src/ruby/getpwuid.c" -o get_pw_by_uid
           ./get_pw_by_uid "$(id -u)"
 
