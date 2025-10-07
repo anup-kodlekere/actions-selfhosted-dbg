@@ -1,0 +1,24 @@
+name: Custom Log Test
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  custom_log:
+    name: Build on ${{ matrix.arch }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-latest
+          - arch: ppc64le
+            runner: custom-log
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Debug
+        run: | 
+          cat /etc/os-release
