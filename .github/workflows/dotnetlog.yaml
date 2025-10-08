@@ -1,0 +1,53 @@
+name: Test Env Var in C#
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-env:
+    runs-on: ubuntu-latest
+    env:
+      MY_TEST_VAR: "Hello from GitHub Actions!"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Create test app
+        run: |
+          mkdir testapp
+          cd testapp
+          dotnet new console -n EnvTest
+          cd EnvTest
+          cat > Program.cs <<'EOF'
+          using System;
+
+          class Program
+          {
+              static void Main()
+              {
+                  string value = Environment.GetEnvironmentVariable("MY_TEST_VAR");
+                  if (string.IsNullOrEmpty(value))
+                  {
+                      Console.WriteLine("❌ Environment variable MY_TEST_VAR is not set.");
+                  }
+                  else
+                  {
+                      Console.WriteLine($"✅ MY_TEST_VAR = {value}");
+                  }
+              }
+          }
+          EOF
+
+      - name: Run app
+        run: |
+          cd testapp/EnvTest
+          dotnet run
+
+          export MY_TEST_VAR=1
+          dotnet run
