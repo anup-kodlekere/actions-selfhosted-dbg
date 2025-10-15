@@ -1,0 +1,29 @@
+name: Build GHA image in GHA
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build:
+    name: Run gaplib
+    runs-on: 'custom-log'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Checkout gaplib
+        uses: actions/checkout@v4
+        with:
+          repository: ppc64le/gaplib    # Example: octocat/Hello-World
+          ref: main                       # Branch, tag, or commit SHA
+
+      - name: Build
+        run: |
+
+          ## switch to CI pr
+          cd gaplib
+          git fetch origin pull/36/head:img
+          git switch img
+          
+          scripts/lxd.sh "${{ matrix.os }}" "${{ matrix.version }}" "" "" "${{ matrix.setup_type }}"
