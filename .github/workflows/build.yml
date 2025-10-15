@@ -17,6 +17,7 @@ jobs:
         with:
           repository: ppc64le/gaplib    # Example: octocat/Hello-World
           ref: main                       # Branch, tag, or commit SHA
+          path: gaplib
 
       - name: Build
         run: |
