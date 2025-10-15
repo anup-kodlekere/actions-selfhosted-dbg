@@ -26,5 +26,9 @@ jobs:
           cd gaplib
           git fetch origin pull/36/head:img
           git switch img
+
+          cat scripts/assets/lxd-preseed.yaml
+
+          ip a
           
-          sudo scripts/lxd.sh "ubuntu" "24.04" "" "" "complete"
+          #sudo scripts/lxd.sh "ubuntu" "24.04" "" "" "complete"
