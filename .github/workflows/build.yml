@@ -27,4 +27,4 @@ jobs:
           git fetch origin pull/36/head:img
           git switch img
           
-          scripts/lxd.sh "ubuntu" "24.04" "" "" "minimal"
+          sudo scripts/lxd.sh "ubuntu" "24.04" "" "" "minimal"
