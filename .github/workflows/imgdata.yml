@@ -15,3 +15,5 @@ jobs:
       - name: Debug
         run: | 
           sudo ls -lha /imagegeneration
+
+          sudo jq . /imagegeneration/imagedata.json
