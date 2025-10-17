@@ -1,0 +1,17 @@
+name: ARM Img Data
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  imgdata:
+    name: Build on power
+    runs-on: imgdata
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Debug
+        run: | 
+          sudo ls -lha /imagegeneration
