@@ -26,8 +26,9 @@ jobs:
           cd gaplib
           git pull
           git fetch origin pull/36/head:img
-          git merge img
-          #git switch img
+          #git merge img
+          git switch img
+          git merge main
 
           # cat scripts/assets/lxd-preseed.yaml
 
