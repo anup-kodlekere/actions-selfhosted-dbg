@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Checkout gaplib
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: ppc64le/gaplib    # Example: octocat/Hello-World
           ref: main                       # Branch, tag, or commit SHA
@@ -24,8 +24,10 @@ jobs:
 
           ## switch to CI pr
           cd gaplib
+          git pull
           git fetch origin pull/36/head:img
-          git switch img
+          git merge img
+          #git switch img
 
           # cat scripts/assets/lxd-preseed.yaml
 
