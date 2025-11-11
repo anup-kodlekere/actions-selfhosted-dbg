@@ -25,10 +25,8 @@ jobs:
           ## switch to CI pr
           cd gaplib
           git pull
-          git fetch origin pull/36/head:img
-          #git merge img
-          git switch img
-          git merge main
+          #git fetch origin pull/36/head:img
+          #git switch img
 
           # cat scripts/assets/lxd-preseed.yaml
 
