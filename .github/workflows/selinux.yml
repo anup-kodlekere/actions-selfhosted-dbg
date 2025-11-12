@@ -1,0 +1,30 @@
+name: SELinux
+
+# Only run on branches (e.g. not tags)
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  fio:
+    name: imgpull on ${{ matrix.arch }} 
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - arch: ppc64le
+            os: goenv
+          # - arch: s390x
+          #   os: ubuntu-24.04-s390x
+          # - arch: amd64
+          #   os: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: RustUp
+        run: 
+          ls -l /sys/fs/selinux
+          getenforce
+          
+          
