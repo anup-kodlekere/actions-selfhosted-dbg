@@ -16,8 +16,8 @@ jobs:
             os: goenv
           # - arch: s390x
           #   os: ubuntu-24.04-s390x
-          # - arch: amd64
-          #   os: ubuntu-latest
+          - arch: amd64
+            os: ubuntu-latest
 
     steps:
       - name: Checkout code
