@@ -23,7 +23,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
       - name: RustUp
-        run: 
+        run: |
           ls -l /sys/fs/selinux
           getenforce
           
