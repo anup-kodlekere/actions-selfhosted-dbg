@@ -21,4 +21,4 @@ jobs:
 
       - name: Debug
         run: | 
-          cat /etc/os-release
+          ls -LaR /opt
