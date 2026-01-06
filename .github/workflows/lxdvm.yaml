@@ -11,49 +11,30 @@ jobs:
       - name: Check if environment is privileged
         shell: bash
         run: |
-          set -e
-
+          set -euo pipefail
           echo "=== Checking for privileged environment ==="
-
+          
           privileged=false
-
-          echo "1) Checking CAP_SYS_ADMIN"
-          if capsh --print | grep -q "cap_sys_admin"; then
-            echo "CAP_SYS_ADMIN is present"
+          
+          echo "1) Attempting mount (tmpfs)"
+          mkdir -p /tmp/priv-test
+          if mount -t tmpfs tmpfs /tmp/priv-test 2>/dev/null; then
+            echo "✔ Mount succeeded"
+            umount /tmp/priv-test
             privileged=true
           else
-            echo "CAP_SYS_ADMIN is NOT present"
+            echo "✘ Mount failed"
           fi
-
+          
           echo
-          echo "2) Attempting mount (tmpfs)"
-          mkdir -p /tmp/test-mount
-          if mount -t tmpfs tmpfs /tmp/test-mount 2>/dev/null; then
-            echo "Mount succeeded"
-            privileged=true
-            umount /tmp/test-mount
-          else
-            echo "Mount failed"
-          fi
-
-          echo
-          echo "3) Checking effective capabilities"
-          if grep -q "0000003fffffffff" /proc/1/status; then
-            echo "All capabilities enabled"
-            privileged=true
-          else
-            echo "Capabilities restricted"
-          fi
-
-          echo
-          echo "4) Checking cgroup write access"
+          echo "2) Checking cgroup write access"
           if [ -w /sys/fs/cgroup ]; then
-            echo "/sys/fs/cgroup is writable"
+            echo "✔ /sys/fs/cgroup writable"
             privileged=true
           else
-            echo "/sys/fs/cgroup is NOT writable"
+            echo "✘ /sys/fs/cgroup not writable"
           fi
-
+          
           echo
           echo "=== Result ==="
           if [ "$privileged" = true ]; then
@@ -62,4 +43,7 @@ jobs:
           else
             echo "Environment is UNPRIVILEGED"
             exit 1
+          fi
+          if capsh --print 2>/dev/null | grep -q cap_sys_admin; then
+            echo "NOTE: CAP_SYS_ADMIN present but insufficient alone"
           fi
