@@ -1,0 +1,65 @@
+name: Check Privileged Environment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  privileged-check:
+    runs-on: lxd-vm
+
+    steps:
+      - name: Check if environment is privileged
+        shell: bash
+        run: |
+          set -e
+
+          echo "=== Checking for privileged environment ==="
+
+          privileged=false
+
+          echo "1) Checking CAP_SYS_ADMIN"
+          if capsh --print | grep -q "cap_sys_admin"; then
+            echo "CAP_SYS_ADMIN is present"
+            privileged=true
+          else
+            echo "CAP_SYS_ADMIN is NOT present"
+          fi
+
+          echo
+          echo "2) Attempting mount (tmpfs)"
+          mkdir -p /tmp/test-mount
+          if mount -t tmpfs tmpfs /tmp/test-mount 2>/dev/null; then
+            echo "Mount succeeded"
+            privileged=true
+            umount /tmp/test-mount
+          else
+            echo "Mount failed"
+          fi
+
+          echo
+          echo "3) Checking effective capabilities"
+          if grep -q "0000003fffffffff" /proc/1/status; then
+            echo "All capabilities enabled"
+            privileged=true
+          else
+            echo "Capabilities restricted"
+          fi
+
+          echo
+          echo "4) Checking cgroup write access"
+          if [ -w /sys/fs/cgroup ]; then
+            echo "/sys/fs/cgroup is writable"
+            privileged=true
+          else
+            echo "/sys/fs/cgroup is NOT writable"
+          fi
+
+          echo
+          echo "=== Result ==="
+          if [ "$privileged" = true ]; then
+            echo "Environment is PRIVILEGED"
+            exit 0
+          else
+            echo "Environment is UNPRIVILEGED"
+            exit 1
+          fi
